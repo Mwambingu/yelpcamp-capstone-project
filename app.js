@@ -2,6 +2,8 @@ const express = require("express");
 const mongoose = require("mongoose");
 const path = require("path");
 
+const Campground = require("./models/campground.js");
+
 main().catch((err) => console.log(err));
 
 // Connecting mongoose to the DB
