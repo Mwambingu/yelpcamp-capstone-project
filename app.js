@@ -2,13 +2,16 @@ const express = require("express");
 const mongoose = require("mongoose");
 const path = require("path");
 
-const Campground = require("./models/campground.js");
+const cities = require("./cities");
+const Campground = require("./models/campground");
+
+console.log(cities);
 
 main().catch((err) => console.log(err));
 
 // Connecting mongoose to the DB
 async function main() {
-    mongoose.connect("mongodb://127.0.0.1:27017/yelpcamp");
+    mongoose.connect("mongodb://127.0.0.1:27017/yelp-camp");
     console.log("Connected to DB...");
 }
 
