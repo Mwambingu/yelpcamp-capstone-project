@@ -2,7 +2,7 @@ const express = require("express");
 const mongoose = require("mongoose");
 const path = require("path");
 
-const cities = require("./cities");
+const cities = require("./seeds/cities");
 const Campground = require("./models/campground");
 
 console.log(cities);

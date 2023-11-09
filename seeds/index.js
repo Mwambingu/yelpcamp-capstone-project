@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const Campgrounds = require("./models/campground");
+const Campgrounds = require("../models/campground");
 const { descriptors, places } = require("./seedHelpers");
 
 const cities = require("./cities");
@@ -26,13 +26,15 @@ async function main() {
     mongoose.connect("mongodb://localhost:27017/yelp-camp");
     console.log("Connected to DB....");
 
+    await Campgrounds.deleteMany({});
+
     for (i = 0; i < 10; i++) {
         let city = getCity();
         camp = new Campgrounds({
             title: getCampName(),
             price: Math.floor(Math.random() * 101),
             description: "camp",
-            location: city.city,
+            location: `${city.city}, ${city.state}`,
         });
 
         console.log(camp);
@@ -40,3 +42,7 @@ async function main() {
         await camp.save();
     }
 }
+
+main().then(() => {
+    mongoose.connection.close();
+});
