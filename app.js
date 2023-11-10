@@ -5,8 +5,6 @@ const path = require("path");
 const cities = require("./seeds/cities");
 const Campground = require("./models/campground");
 
-console.log(cities);
-
 main().catch((err) => console.log(err));
 
 // Connecting mongoose to the DB
@@ -28,6 +26,12 @@ app.set("views", path.join(__dirname, "views"));
 // Routes to the home page
 app.get("/", (req, res) => {
     res.render("home");
+});
+
+// Routes to all campgrounds
+app.get("/campgrounds", async (req, res) => {
+    const camps = await Campground.find({});
+    res.render("campgrounds/index", { camps });
 });
 
 // Binds and listens to connections on the specified port

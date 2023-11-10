@@ -28,7 +28,7 @@ async function main() {
 
     await Campgrounds.deleteMany({});
 
-    for (i = 0; i < 10; i++) {
+    for (i = 0; i < 100; i++) {
         let city = getCity();
         camp = new Campgrounds({
             title: getCampName(),
