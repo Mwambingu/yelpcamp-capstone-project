@@ -11,8 +11,16 @@
             <% for (let camp of camps) { %>
             <li>
                 <strong><%=camp.title %></strong>, <i><%=camp.location %></i>
+                <a href="/campgrounds/<%=camp.id%>"><%= ">>" %></a>
             </li>
             <% } %>
         </ul>
+        <button id="create-btn">Create New</button>
+        <script>
+            const createBtn = document.querySelector("#create-btn");
+            createBtn.addEventListener("click", (evt) => {
+                location.href = "/campgrounds/new";
+            });
+        </script>
     </body>
 </html>

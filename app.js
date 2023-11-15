@@ -34,6 +34,23 @@ app.get("/campgrounds", async (req, res) => {
     res.render("campgrounds/index", { camps });
 });
 
+// Routes to the new page
+app.get("/campgrounds/new", async (req, res) => {
+    res.render("campgrounds/new", { cities });
+});
+
+// Routes to show page
+app.get("/campgrounds/:id", async (req, res) => {
+    const { id } = req.params;
+    try {
+        const camp = await Campground.findById(id);
+        res.render("campgrounds/show", { camp });
+    } catch (err) {
+        console.log(err);
+        res.send("Not Found");
+    }
+});
+
 // Binds and listens to connections on the specified port
 app.listen(port, () => {
     console.log(`Serving on port: ${port}`);
