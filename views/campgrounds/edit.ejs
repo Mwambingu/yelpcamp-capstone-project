@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Edit Camp</title>
+    </head>
+    <body>
+        <h1>Edit <%= camp.title %></h1>
+        <form action="/campgrounds/<%= camp.id%>?_method=patch" method="post">
+            <input
+                type="text"
+                name="title"
+                id="title"
+                value="<%= camp.title %>"
+                placeholder="<%= camp.title %>"
+            />
+            <br />
+            <br />
+            <input
+                type="number"
+                name="price"
+                id="price"
+                value="<%= camp.price %>"
+                placeholder="<%= camp.price %>"
+            />
+            <br />
+            <br />
+            <textarea
+                name="description"
+                id="description"
+                cols="30"
+                rows="10"
+                placeholder="<%= camp.description%>"
+            >
+<%= camp.description %></textarea
+            >
+            <br />
+            <br />
+            <label for="location"
+                >Location: <strong><%=camp.location %></strong></label
+            >
+            <br />
+            <br />
+            <select name="location" id="location">
+                <% for (let city of cities) { %>
+                <option value="<%= `${city.city}, ${city.state}`%>">
+                    <%= `${city.city}, ${city.state}`%>
+                </option>
+                <% } %>
+            </select>
+            <br />
+            <br />
+            <button type="submit">Submit</button>
+        </form>
+        <br>
+        <br>
+        <a href="/campgrounds/<%=camp.id%>">&#60&#60 Go back</a>
+    </body>
+</html>

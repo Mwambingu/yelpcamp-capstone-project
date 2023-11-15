@@ -27,6 +27,9 @@ app.set("views", path.join(__dirname, "views"));
 // Setting the default views folder to an absolute path
 app.use(express.urlencoded({ extended: true }));
 
+// Setting the default views folder to an absolute path
+app.use(methodOverride("_method"));
+
 // Routes to the home page
 app.get("/", (req, res) => {
     res.render("home");
@@ -50,6 +53,25 @@ app.post("/campgrounds", async (req, res) => {
     res.redirect("/campgrounds");
 });
 
+// Routes to all campgrounds
+app.patch("/campgrounds/:id", async (req, res) => {
+    const { id } = req.params;
+    const { title, price, description, location } = req.body;
+
+    const update = { title, price, description, location };
+
+    console.log(id);
+    console.log(update);
+
+    const campToUpdate = await Campground.findByIdAndUpdate(id, update, {
+        new: true,
+    });
+
+    console.log(campToUpdate);
+
+    res.redirect(`/campgrounds/${id}`);
+});
+
 // Routes to the new page
 app.get("/campgrounds/new", async (req, res) => {
     res.render("campgrounds/new", { cities });
@@ -65,6 +87,13 @@ app.get("/campgrounds/:id", async (req, res) => {
         console.log(err);
         res.send("Not Found");
     }
+});
+
+// Routes to show page
+app.get("/campgrounds/:id/edit", async (req, res) => {
+    const { id } = req.params;
+    camp = await Campground.findById(id);
+    res.render("campgrounds/edit", { camp, cities });
 });
 
 // Binds and listens to connections on the specified port
