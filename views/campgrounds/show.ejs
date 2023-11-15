@@ -17,6 +17,19 @@
         <a href="/campgrounds/<%=camp.id%>/edit">Edit</a>
         <br>
         <br>
+        <form id="delete-form" action="/campgrounds/<%=camp.id%>?_method=delete" method="post">
+          <a style="text-decoration: underline;" id="delete-link">Delete</a>
+        </form>
+        <br>
+        <br>
         <a href="/campgrounds">&#60&#60 Go back</a>
+
+        <script>
+          const deleteLink = document.querySelector("#delete-link");
+          deleteLink.addEventListener("click", (evt) => {
+            const form = document.querySelector("#delete-form");
+            form.submit();
+          })
+        </script>
     </body>
 </html>

@@ -72,6 +72,18 @@ app.patch("/campgrounds/:id", async (req, res) => {
     res.redirect(`/campgrounds/${id}`);
 });
 
+// Routes to all campgrounds
+app.delete("/campgrounds/:id", async (req, res) => {
+    const { id } = req.params;
+
+    console.log(id);
+    const deletedCamp = await Campground.findByIdAndDelete(id);
+
+    console.log(`${deletedCamp.title} has been deleted!!`);
+
+    res.redirect(`/campgrounds`);
+});
+
 // Routes to the new page
 app.get("/campgrounds/new", async (req, res) => {
     res.render("campgrounds/new", { cities });
