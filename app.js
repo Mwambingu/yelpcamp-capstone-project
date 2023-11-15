@@ -1,5 +1,6 @@
 const express = require("express");
 const mongoose = require("mongoose");
+const methodOverride = require("method-override");
 const path = require("path");
 
 const cities = require("./seeds/cities");
@@ -23,6 +24,9 @@ app.set("view engine", "ejs");
 // Setting the default views folder to an absolute path
 app.set("views", path.join(__dirname, "views"));
 
+// Setting the default views folder to an absolute path
+app.use(express.urlencoded({ extended: true }));
+
 // Routes to the home page
 app.get("/", (req, res) => {
     res.render("home");
@@ -32,6 +36,18 @@ app.get("/", (req, res) => {
 app.get("/campgrounds", async (req, res) => {
     const camps = await Campground.find({});
     res.render("campgrounds/index", { camps });
+});
+
+// Routes to all campgrounds
+app.post("/campgrounds", async (req, res) => {
+    console.log(req.body);
+    const { title, price, description, location } = req.body;
+
+    const newCamp = new Campground({ title, price, description, location });
+
+    await newCamp.save();
+
+    res.redirect("/campgrounds");
 });
 
 // Routes to the new page
