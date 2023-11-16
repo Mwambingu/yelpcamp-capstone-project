@@ -14,15 +14,14 @@
             </li>
             <li><strong>Location:</strong> <em><%= camp.location %></em></li>
         </ul>
-        <a href="/campgrounds/<%=camp.id%>/edit">Edit</a>
+        <a href="/campgrounds/<%=camp.id%>/edit">Edit Campground</a>
         <br>
         <br>
         <form id="delete-form" action="/campgrounds/<%=camp.id%>?_method=delete" method="post">
           <a style="text-decoration: underline;" id="delete-link">Delete</a>
         </form>
         <br>
-        <br>
-        <a href="/campgrounds">&#60&#60 Go back</a>
+        <a href="/campgrounds">&#60&#60 All Campgrounds</a>
 
         <script>
           const deleteLink = document.querySelector("#delete-link");

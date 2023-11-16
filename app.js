@@ -24,10 +24,10 @@ app.set("view engine", "ejs");
 // Setting the default views folder to an absolute path
 app.set("views", path.join(__dirname, "views"));
 
-// Setting the default views folder to an absolute path
+// Parses incoming requests with URL-encoded payloads and is based on a body parser.
 app.use(express.urlencoded({ extended: true }));
 
-// Setting the default views folder to an absolute path
+// Setting up method override to handle put or delete requests
 app.use(methodOverride("_method"));
 
 // Routes to the home page
@@ -41,7 +41,7 @@ app.get("/campgrounds", async (req, res) => {
     res.render("campgrounds/index", { camps });
 });
 
-// Routes to all campgrounds
+// Creates new campground
 app.post("/campgrounds", async (req, res) => {
     console.log(req.body);
     const { title, price, description, location } = req.body;
@@ -53,7 +53,7 @@ app.post("/campgrounds", async (req, res) => {
     res.redirect("/campgrounds");
 });
 
-// Routes to all campgrounds
+// Updates campground information
 app.patch("/campgrounds/:id", async (req, res) => {
     const { id } = req.params;
     const { title, price, description, location } = req.body;
@@ -72,7 +72,7 @@ app.patch("/campgrounds/:id", async (req, res) => {
     res.redirect(`/campgrounds/${id}`);
 });
 
-// Routes to all campgrounds
+// Deletes a campground by id
 app.delete("/campgrounds/:id", async (req, res) => {
     const { id } = req.params;
 
@@ -84,12 +84,12 @@ app.delete("/campgrounds/:id", async (req, res) => {
     res.redirect(`/campgrounds`);
 });
 
-// Routes to the new page
+// Routes to the create new campground page
 app.get("/campgrounds/new", async (req, res) => {
     res.render("campgrounds/new", { cities });
 });
 
-// Routes to show page
+// Routes to the show campground information page
 app.get("/campgrounds/:id", async (req, res) => {
     const { id } = req.params;
     try {
@@ -101,7 +101,7 @@ app.get("/campgrounds/:id", async (req, res) => {
     }
 });
 
-// Routes to show page
+// Routes to the update campground information page
 app.get("/campgrounds/:id/edit", async (req, res) => {
     const { id } = req.params;
     camp = await Campground.findById(id);
