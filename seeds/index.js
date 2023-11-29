@@ -35,6 +35,7 @@ async function main() {
             price: Math.floor(Math.random() * 101),
             description: "camp",
             location: `${city.city}, ${city.state}`,
+            image: "https://source.unsplash.com/collection/483251",
         });
 
         console.log(camp);

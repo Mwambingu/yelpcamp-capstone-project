@@ -1,7 +1,12 @@
 <%layout("layouts/boilerplate")%>
 <h1><%= camp.title %> Details</h1>
+<img
+    style="height: 200px; width: 200px"
+    src="<%=camp.image%>"
+    class="img-thumbnail"
+/>
 <ul>
-    <li><strong>Price:</strong> <em><%= camp.price %></em></li>
+    <li><strong>Price:</strong> <em>$<%= camp.price %></em></li>
     <li><strong>Description:</strong> <em><%= camp.description %></em></li>
     <li><strong>Location:</strong> <em><%= camp.location %></em></li>
 </ul>
