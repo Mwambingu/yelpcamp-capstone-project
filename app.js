@@ -36,7 +36,8 @@ app.use(methodOverride("_method"));
 
 // Routes to the home page
 app.get("/", (req, res) => {
-    res.render("home");
+    const pageTitle = "YelpCamp";
+    res.render("home", { pageTitle });
 });
 
 // Routes to all campgrounds
