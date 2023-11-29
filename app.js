@@ -2,6 +2,7 @@ const express = require("express");
 const mongoose = require("mongoose");
 const methodOverride = require("method-override");
 const path = require("path");
+const ejsMate = require("ejs-mate");
 
 const cities = require("./seeds/cities");
 const Campground = require("./models/campground");
@@ -18,16 +19,19 @@ async function main() {
 app = express();
 port = 3000;
 
+// Setting the layout engine as ejs-mate
+app.engine("ejs", ejsMate);
+
 // Setting the native template rendering engine to ejs
 app.set("view engine", "ejs");
 
 // Setting the default views folder to an absolute path
 app.set("views", path.join(__dirname, "views"));
 
-// Parses incoming requests with URL-encoded payloads and is based on a body parser.
+// Setting urlencoded as the default parser for URL-encoded payloads
 app.use(express.urlencoded({ extended: true }));
 
-// Setting up method override to handle put or delete requests
+// Setting the default views folder to an absolute path
 app.use(methodOverride("_method"));
 
 // Routes to the home page
@@ -38,10 +42,11 @@ app.get("/", (req, res) => {
 // Routes to all campgrounds
 app.get("/campgrounds", async (req, res) => {
     const camps = await Campground.find({});
-    res.render("campgrounds/index", { camps });
+    const pageTitle = "All Campgrounds";
+    res.render("campgrounds/index", { camps, pageTitle });
 });
 
-// Creates new campground
+// Routes to all campgrounds
 app.post("/campgrounds", async (req, res) => {
     console.log(req.body);
     const { title, price, description, location } = req.body;
@@ -53,7 +58,7 @@ app.post("/campgrounds", async (req, res) => {
     res.redirect("/campgrounds");
 });
 
-// Updates campground information
+// Routes to all campgrounds
 app.patch("/campgrounds/:id", async (req, res) => {
     const { id } = req.params;
     const { title, price, description, location } = req.body;
@@ -72,7 +77,7 @@ app.patch("/campgrounds/:id", async (req, res) => {
     res.redirect(`/campgrounds/${id}`);
 });
 
-// Deletes a campground by id
+// Routes to all campgrounds
 app.delete("/campgrounds/:id", async (req, res) => {
     const { id } = req.params;
 
@@ -84,28 +89,31 @@ app.delete("/campgrounds/:id", async (req, res) => {
     res.redirect(`/campgrounds`);
 });
 
-// Routes to the create new campground page
+// Routes to the new page
 app.get("/campgrounds/new", async (req, res) => {
-    res.render("campgrounds/new", { cities });
+    const pageTitle = "New Campground";
+    res.render("campgrounds/new", { cities, pageTitle });
 });
 
-// Routes to the show campground information page
+// Routes to show page
 app.get("/campgrounds/:id", async (req, res) => {
     const { id } = req.params;
     try {
         const camp = await Campground.findById(id);
-        res.render("campgrounds/show", { camp });
+        const pageTitle = camp.title;
+        res.render("campgrounds/show", { camp, pageTitle });
     } catch (err) {
         console.log(err);
         res.send("Not Found");
     }
 });
 
-// Routes to the update campground information page
+// Routes to show page
 app.get("/campgrounds/:id/edit", async (req, res) => {
     const { id } = req.params;
+    const pageTitle = "Edit Campground";
     camp = await Campground.findById(id);
-    res.render("campgrounds/edit", { camp, cities });
+    res.render("campgrounds/edit", { camp, cities, pageTitle });
 });
 
 // Binds and listens to connections on the specified port
