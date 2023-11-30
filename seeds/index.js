@@ -2,6 +2,9 @@ const mongoose = require("mongoose");
 const Campgrounds = require("../models/campground");
 const { descriptors, places } = require("./seedHelpers");
 
+const campDescription =
+    "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dolorum, voluptas, ullam aut expedita tenetur quod cumque quasi distinctio molestias aperiam minus eos eligendi, nisi quaerat alias deleniti eaque laudantium exercitationem.Praesentium dolorem sapiente harum alias, dolor natus beatae doloribus repellat eius sed molestiae explicabo ipsa quae possimus iusto sunt totam quo, facere nostrum nemo laboriosam quidem consectetur! Ullam, at atque! Fugit adipisci voluptatibus esse repellat, nostrum omnis explicabo ea officia quaerat dolorem mollitia culpa tempora molestias. Minima autem repellat iusto nemo vitae, excepturi nobis odio aut ducimus laudantium rerum quis? Voluptates eveniet atque quod rerum quasi fugiat temporibus assumenda numquam hic commodi, non distinctio voluptatem earum asperiores eum optio alias dolorum a! Ea, dignissimos iusto. Non temporibus voluptates quia? Quisquam.";
+
 const cities = require("./cities");
 
 const getRandomInt = (max) => {
@@ -33,7 +36,7 @@ async function main() {
         camp = new Campgrounds({
             title: getCampName(),
             price: Math.floor(Math.random() * 101),
-            description: "camp",
+            description: campDescription,
             location: `${city.city}, ${city.state}`,
             image: "https://source.unsplash.com/collection/483251",
         });
