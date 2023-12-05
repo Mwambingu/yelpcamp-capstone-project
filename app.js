@@ -50,9 +50,15 @@ app.get("/campgrounds", async (req, res) => {
 // Routes to all campgrounds
 app.post("/campgrounds", async (req, res) => {
     console.log(req.body);
-    const { title, price, description, location } = req.body;
+    const { title, price, description, location, image } = req.body;
 
-    const newCamp = new Campground({ title, price, description, location });
+    const newCamp = new Campground({
+        title,
+        price,
+        description,
+        location,
+        image,
+    });
 
     await newCamp.save();
 
