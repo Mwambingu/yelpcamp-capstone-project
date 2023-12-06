@@ -1,51 +1,76 @@
 <%layout("layouts/boilerplate")%>
-<h1>Edit <%= camp.title %></h1>
-<form action="/campgrounds/<%= camp.id%>?_method=patch" method="post">
-    <input
-        type="text"
-        name="title"
-        id="title"
-        value="<%= camp.title %>"
-        placeholder="<%= camp.title %>"
-    />
-    <br />
-    <br />
-    <input
-        type="number"
-        name="price"
-        id="price"
-        value="<%= camp.price %>"
-        placeholder="<%= camp.price %>"
-    />
-    <br />
-    <br />
-    <textarea
-        name="description"
-        id="description"
-        cols="30"
-        rows="10"
-        placeholder="<%= camp.description%>"
-    >
-<%= camp.description %></textarea
-    >
-    <br />
-    <br />
-    <label for="location"
-        >Location: <strong> <%=camp.location %> </strong></label
-    >
-    <br />
-    <br />
-    <select name="location" id="location">
-        <% for (let city of cities) { %>
-        <option value="<%= `${city.city}, ${city.state}`%>">
-            <%= `${city.city}, ${city.state}`%>
-        </option>
-        <% } %>
-    </select>
-    <br />
-    <br />
-    <button type="submit">Submit</button>
-</form>
-<br />
-<br />
-<a href="/campgrounds/<%=camp.id%>">Go back</a>
+<div class="row">
+    <h1 class="text-center">Edit Campground</h1>
+    <div class="col-6 offset-3">
+        <form action="/campgrounds/<%= camp.id%>?_method=patch" method="post">
+            <div class="mb-3">
+                <label for="title" class="form-label">Title</label>
+                <input
+                    class="form-control"
+                    type="text"
+                    name="title"
+                    value="<%= camp.title %>"
+                    placeholder="<%= camp.title %>"
+                />
+            </div>
+            <div class="mb-3">
+                <label for="location" class="form-label">Location</label>
+                <input
+                    type="text"
+                    class="form-control"
+                    name="location"
+                    id="location"
+                    value="<%= camp.location %>"
+                    placeholder="<%= camp.location %>"
+                />
+            </div>
+            <div class="mb-3">
+                <label for="price" class="form-label">Campground Price</label>
+                <div class="input-group mb-3">
+                    <span class="input-group-text" id="price-label">$</span>
+                    <input
+                        type="text"
+                        class="form-control"
+                        id="price"
+                        name="price"
+                        value="<%= camp.price %>"
+                        placeholder="<%= camp.price %>"
+                        aria-label="price"
+                        aria-describedby="price-label"
+                    />
+                </div>
+            </div>
+            <div class="mb-3">
+                <label for="image" class="form-label">Image Url</label>
+                <input
+                    type="text"
+                    class="form-control"
+                    name="image"
+                    id="image"
+                    value="<%= camp.image %>"
+                    placeholder="<%= camp.image %>"
+                />
+            </div>
+            <div class="mb-3">
+                <label for="description" class="form-label">Description</label>
+                <textarea
+                    class="form-control"
+                    name="description"
+                    id="description"
+                    cols="30"
+                    rows="3"
+                    value="<%= camp.description %>"
+                    placeholder="<%= camp.description %>"
+                ></textarea>
+            </div>
+            <div class="mb-3">
+                <button class="btn btn-success" type="submit">
+                    Update Campground
+                </button>
+            </div>
+        </form>
+        <a class="btn btn-primary" href="/campgrounds/<%=camp.id%>"
+            >Back To Campground</a
+        >
+    </div>
+</div>
