@@ -1,27 +1,40 @@
 <%layout("layouts/boilerplate")%>
-<h1><%= camp.title %> Details</h1>
-<img
-    style="height: 200px; width: 200px"
-    src="<%=camp.image%>"
-    class="img-thumbnail"
-/>
-<ul>
-    <li><strong>Price:</strong> <em>$<%= camp.price %></em></li>
-    <li><strong>Description:</strong> <em><%= camp.description %></em></li>
-    <li><strong>Location:</strong> <em><%= camp.location %></em></li>
-</ul>
-<a href="/campgrounds/<%=camp.id%>/edit">Edit Campground</a>
-<br />
-<br />
-<form
-    id="delete-form"
-    action="/campgrounds/<%=camp.id%>?_method=delete"
-    method="post"
->
-    <a style="text-decoration: underline" id="delete-link">Delete</a>
-</form>
-<br />
-<a href="/campgrounds"> All Campgrounds</a>
+<div class="row">
+    <div class="col-6 offset-3">
+        <div class="card mb-3">
+            <img src="<%=camp.image%>" class="img-fluid" />
+            <div class="card-body">
+                <h5 class="card-title"><%=camp.title%></h5>
+                <p class="card-text"><%=camp.description%></p>
+            </div>
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item text-muted"><%=camp.location%></li>
+                <li class="list-group-item">$<%=camp.price%>/night</li>
+            </ul>
+            <div class="card-body">
+                <a href="/campgrounds/<%=camp.id%>/edit" class="btn btn-info"
+                    >Edit
+                </a>
+                <form
+                    id="delete-form"
+                    action="/campgrounds/<%=camp.id%>?_method=delete"
+                    method="post"
+                    class="d-inline"
+                >
+                    <a class="btn btn-danger" id="delete-link">Delete</a>
+                </form>
+            </div>
+            <div
+                class="card-footer text-muted d-flex justify-content-between align-items-center"
+            >
+                <a href="/campgrounds" class="btn btn-sm btn-primary mt-2">
+                    All Campgrounds</a
+                >
+                2 days ago
+            </div>
+        </div>
+    </div>
+</div>
 
 <script>
     const deleteLink = document.querySelector("#delete-link");
