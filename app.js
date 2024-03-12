@@ -34,6 +34,10 @@ app.use(express.urlencoded({ extended: true }));
 // Setting the default views folder to an absolute path
 app.use(methodOverride("_method"));
 
+// Setting up static files access
+console.log(path.join(__dirname, "public"));
+app.use("/static", express.static("public"));
+
 // Routes to the home page
 app.get("/", (req, res) => {
     const pageTitle = "YelpCamp";

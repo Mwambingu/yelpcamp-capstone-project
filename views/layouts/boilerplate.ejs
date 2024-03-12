@@ -9,9 +9,10 @@
             integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
             crossorigin="anonymous"
         />
+        <link rel="stylesheet" href="/static/app.css" />
         <title><%=pageTitle%></title>
     </head>
-    <body class="d-flex flex-column vh-100">
+    <body class="d-flex flex-column">
         <%- include ("../partials/navbar.ejs") %>
         <main class="container mt-5"><%-body%></main>
         <%- include("../partials/footer.ejs") %>
