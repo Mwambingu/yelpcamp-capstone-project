@@ -66,7 +66,7 @@ app.post("/campgrounds", async (req, res) => {
 
     await newCamp.save();
 
-    res.redirect("/campgrounds");
+    res.redirect(`/campgrounds/${newCamp.id}`);
 });
 
 // Updates a campgrounds details
@@ -119,7 +119,7 @@ app.get("/campgrounds/:id", async (req, res) => {
     }
 });
 
-// Routes to show page
+// Routes to the edit campground page
 app.get("/campgrounds/:id/edit", async (req, res) => {
     const { id } = req.params;
     const pageTitle = "Edit Campground";
