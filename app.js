@@ -69,7 +69,7 @@ app.post("/campgrounds", async (req, res) => {
     res.redirect("/campgrounds");
 });
 
-// Routes to all campgrounds
+// Updates a campgrounds details
 app.patch("/campgrounds/:id", async (req, res) => {
     const { id } = req.params;
     const { title, price, description, location } = req.body;
@@ -88,7 +88,7 @@ app.patch("/campgrounds/:id", async (req, res) => {
     res.redirect(`/campgrounds/${id}`);
 });
 
-// Routes to all campgrounds
+// Deletes a specified campground
 app.delete("/campgrounds/:id", async (req, res) => {
     const { id } = req.params;
 
