@@ -3,6 +3,8 @@ const mongoose = require("mongoose");
 const methodOverride = require("method-override");
 const path = require("path");
 const ejsMate = require("ejs-mate");
+const ExpressError = require("./utils/ExpressError");
+const catchAsync = require("./utils/catchAsync");
 
 const cities = require("./seeds/cities");
 const Campground = require("./models/campground");
@@ -45,86 +47,108 @@ app.get("/", (req, res) => {
 });
 
 // Routes to all campgrounds
-app.get("/campgrounds", async (req, res) => {
-    const camps = await Campground.find({});
-    const pageTitle = "All Campgrounds";
-    res.render("campgrounds/index", { camps, pageTitle });
-});
+app.get(
+    "/campgrounds",
+    catchAsync(async (req, res) => {
+        const camps = await Campground.find({});
+        const pageTitle = "All Campgrounds";
+        res.render("campgrounds/index", { camps, pageTitle });
+    })
+);
 
 // Routes to all campgrounds
-app.post("/campgrounds", async (req, res) => {
-    console.log(req.body);
-    const { title, price, description, location, image } = req.body;
+app.post(
+    "/campgrounds",
+    catchAsync(async (req, res, next) => {
+        console.log(req.body);
+        const { title, price, description, location, image } = req.body;
 
-    const newCamp = new Campground({
-        title,
-        price,
-        description,
-        location,
-        image,
-    });
+        const newCamp = new Campground({
+            title,
+            price,
+            description,
+            location,
+            image,
+        });
 
-    await newCamp.save();
+        await newCamp.save();
 
-    res.redirect(`/campgrounds/${newCamp.id}`);
-});
+        res.redirect(`/campgrounds/${newCamp.id}`);
+    })
+);
 
 // Updates a campgrounds details
-app.patch("/campgrounds/:id", async (req, res) => {
-    const { id } = req.params;
-    const { title, price, description, location } = req.body;
+app.patch(
+    "/campgrounds/:id",
+    catchAsync(async (req, res) => {
+        const { id } = req.params;
+        const { title, price, description, location } = req.body;
 
-    const update = { title, price, description, location };
+        const update = { title, price, description, location };
 
-    console.log(id);
-    console.log(update);
+        console.log(id);
+        console.log(update);
 
-    const campToUpdate = await Campground.findByIdAndUpdate(id, update, {
-        new: true,
-    });
+        const campToUpdate = await Campground.findByIdAndUpdate(id, update, {
+            new: true,
+        });
 
-    console.log(campToUpdate);
+        console.log(campToUpdate);
 
-    res.redirect(`/campgrounds/${id}`);
-});
+        res.redirect(`/campgrounds/${id}`);
+    })
+);
 
 // Deletes a specified campground
-app.delete("/campgrounds/:id", async (req, res) => {
-    const { id } = req.params;
+app.delete(
+    "/campgrounds/:id",
+    catchAsync(async (req, res) => {
+        const { id } = req.params;
 
-    console.log(id);
-    const deletedCamp = await Campground.findByIdAndDelete(id);
+        console.log(id);
+        const deletedCamp = await Campground.findByIdAndDelete(id);
 
-    console.log(`${deletedCamp.title} has been deleted!!`);
+        console.log(`${deletedCamp.title} has been deleted!!`);
 
-    res.redirect(`/campgrounds`);
-});
+        res.redirect(`/campgrounds`);
+    })
+);
 
 // Routes to the new page
-app.get("/campgrounds/new", async (req, res) => {
-    const pageTitle = "New Campground";
-    res.render("campgrounds/new", { cities, pageTitle });
-});
+app.get(
+    "/campgrounds/new",
+    catchAsync(async (req, res) => {
+        const pageTitle = "New Campground";
+        res.render("campgrounds/new", { cities, pageTitle });
+    })
+);
 
 // Routes to show page
-app.get("/campgrounds/:id", async (req, res) => {
-    const { id } = req.params;
-    try {
+app.get(
+    "/campgrounds/:id",
+    catchAsync(async (req, res) => {
+        const { id } = req.params;
         const camp = await Campground.findById(id);
         const pageTitle = camp.title;
         res.render("campgrounds/show", { camp, pageTitle });
-    } catch (err) {
-        console.log(err);
-        res.send("Not Found");
-    }
-});
+    })
+);
 
 // Routes to the edit campground page
-app.get("/campgrounds/:id/edit", async (req, res) => {
-    const { id } = req.params;
-    const pageTitle = "Edit Campground";
-    camp = await Campground.findById(id);
-    res.render("campgrounds/edit", { camp, cities, pageTitle });
+app.get(
+    "/campgrounds/:id/edit",
+    catchAsync(async (req, res) => {
+        const { id } = req.params;
+        const pageTitle = "Edit Campground";
+        camp = await Campground.findById(id);
+        res.render("campgrounds/edit", { camp, cities, pageTitle });
+    })
+);
+
+// Setting up a custom error handler
+app.use((err, req, res, next) => {
+    const { status = 500, message = "Something went wrong" } = err;
+    res.status(status).send(message);
 });
 
 // Binds and listens to connections on the specified port
