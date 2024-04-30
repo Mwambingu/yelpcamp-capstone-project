@@ -60,19 +60,11 @@ app.get(
 app.post(
     "/campgrounds",
     catchAsync(async (req, res, next) => {
-        if (!req.body) {
+        if (!req.body.campground) {
             throw new ExpressError("Invalid Campground Data", 400);
         }
-        console.log(req.body);
-        const { title, price, description, location, image } = req.body;
 
-        const newCamp = new Campground({
-            title,
-            price,
-            description,
-            location,
-            image,
-        });
+        const newCamp = new Campground(req.body.campground);
 
         await newCamp.save();
 
