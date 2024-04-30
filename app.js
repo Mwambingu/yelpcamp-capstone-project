@@ -5,9 +5,11 @@ const path = require("path");
 const ejsMate = require("ejs-mate");
 const ExpressError = require("./utils/ExpressError");
 const catchAsync = require("./utils/catchAsync");
+const Joi = require("joi");
 
 const cities = require("./seeds/cities");
 const Campground = require("./models/campground");
+const { title } = require("process");
 
 main().catch((err) => console.log(err));
 
@@ -60,8 +62,26 @@ app.get(
 app.post(
     "/campgrounds",
     catchAsync(async (req, res, next) => {
-        if (!req.body.campground) {
-            throw new ExpressError("Invalid Campground Data", 400);
+        // if (!req.body.campground) {
+        //     throw new ExpressError("Invalid Campground Data", 400);
+        // }
+
+        // Setting up the Joi Schema
+        const campgroundSchema = Joi.object({
+            campground: Joi.object({
+                title: Joi.string().required(),
+                location: Joi.string().required(),
+                price: Joi.number().required().min(0),
+                image: Joi.string().required(),
+                description: Joi.string().required(),
+            }).required(),
+        });
+
+        const { error } = campgroundSchema.validate(req.body);
+
+        if (error) {
+            const msg = error.details.map((el) => el.message).join(",");
+            throw new ExpressError(msg, 400);
         }
 
         const newCamp = new Campground(req.body.campground);
@@ -147,7 +167,9 @@ app.all("*", (req, res, next) => {
 
 // Setting up a custom error handler
 app.use((err, req, res, next) => {
-    const { statusCode = 500, message = "Something went wrong" } = err;
+    console.log(err);
+    console.log(err.statusCode);
+    const { statusCode = 500 } = err;
     const pageTitle = "Error Page";
 
     if (!err.message) err.message = "Something went wrong!";
