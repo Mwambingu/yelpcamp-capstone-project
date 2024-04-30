@@ -60,6 +60,9 @@ app.get(
 app.post(
     "/campgrounds",
     catchAsync(async (req, res, next) => {
+        if (!req.body) {
+            throw new ExpressError("Invalid Campground Data", 400);
+        }
         console.log(req.body);
         const { title, price, description, location, image } = req.body;
 
@@ -145,10 +148,18 @@ app.get(
     })
 );
 
+// Setting up a 404 error page
+app.all("*", (req, res, next) => {
+    next(new ExpressError("Page Not Found", 404));
+});
+
 // Setting up a custom error handler
 app.use((err, req, res, next) => {
-    const { status = 500, message = "Something went wrong" } = err;
-    res.status(status).send(message);
+    const { statusCode = 500, message = "Something went wrong" } = err;
+    const pageTitle = "Error Page";
+
+    if (!err.message) err.message = "Something went wrong!";
+    res.status(statusCode).render("error", { err, pageTitle });
 });
 
 // Binds and listens to connections on the specified port

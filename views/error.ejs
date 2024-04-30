@@ -1,0 +1,21 @@
+<%layout("layouts/boilerplate")%>
+<!-- My Implementation -->
+<!-- <div
+    style="height: 300px; width: 500px"
+    class="container d-flex flex-column justify-content-center align-items-center"
+>
+    <h1 class="display-1 e-404">404</h1>
+    <p class="lead">
+        <span style="font-weight: bold">Error:</span> Page not found
+    </p>
+</div> -->
+
+<!-- Colt's Implementation -->
+<div class="row">
+    <div class="col-6 offset-3">
+        <div class="alert alert-danger" role="alert">
+            <h4 class="alert-heading"><%= err.message %></h4>
+            <p><%= err.stack %></p>
+        </div>
+    </div>
+</div>
