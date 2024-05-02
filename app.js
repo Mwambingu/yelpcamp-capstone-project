@@ -5,7 +5,7 @@ const path = require("path");
 const ejsMate = require("ejs-mate");
 const ExpressError = require("./utils/ExpressError");
 const catchAsync = require("./utils/catchAsync");
-const Joi = require("joi");
+const { campgroundSchema } = require("./schemas");
 
 const cities = require("./seeds/cities");
 const Campground = require("./models/campground");
@@ -42,6 +42,18 @@ app.use(methodOverride("_method"));
 console.log(path.join(__dirname, "public"));
 app.use("/static", express.static("public"));
 
+// JOI Middleware to handle form validations
+const validateCampground = (req, res, next) => {
+    const { error } = campgroundSchema.validate(req.body);
+
+    if (error) {
+        const msg = error.details.map((el) => el.message).join(",");
+        throw new ExpressError(msg, 400);
+    }
+
+    next();
+};
+
 // Routes to the home page
 app.get("/", (req, res) => {
     const pageTitle = "YelpCamp";
@@ -61,29 +73,8 @@ app.get(
 // Routes to all campgrounds
 app.post(
     "/campgrounds",
+    validateCampground,
     catchAsync(async (req, res, next) => {
-        // if (!req.body.campground) {
-        //     throw new ExpressError("Invalid Campground Data", 400);
-        // }
-
-        // Setting up the Joi Schema
-        const campgroundSchema = Joi.object({
-            campground: Joi.object({
-                title: Joi.string().required(),
-                location: Joi.string().required(),
-                price: Joi.number().required().min(0),
-                image: Joi.string().required(),
-                description: Joi.string().required(),
-            }).required(),
-        });
-
-        const { error } = campgroundSchema.validate(req.body);
-
-        if (error) {
-            const msg = error.details.map((el) => el.message).join(",");
-            throw new ExpressError(msg, 400);
-        }
-
         const newCamp = new Campground(req.body.campground);
 
         await newCamp.save();
@@ -95,6 +86,7 @@ app.post(
 // Updates a campgrounds details
 app.patch(
     "/campgrounds/:id",
+    validateCampground,
     catchAsync(async (req, res) => {
         const { id } = req.params;
         const { title, price, description, location } = req.body;
@@ -167,8 +159,6 @@ app.all("*", (req, res, next) => {
 
 // Setting up a custom error handler
 app.use((err, req, res, next) => {
-    console.log(err);
-    console.log(err.statusCode);
     const { statusCode = 500 } = err;
     const pageTitle = "Error Page";
 
